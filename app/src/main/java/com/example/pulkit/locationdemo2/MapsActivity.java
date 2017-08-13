@@ -69,8 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         points.add(new LatLng(28.6129, 77.2295));
         points.add(new LatLng(28.6881, 77.2069));
         points.add(new LatLng(28.5244, 77.1855));
-        getDeviceLocation();
-
+//        getDeviceLocation();
     }
 
     @Override
@@ -104,7 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 location = locationResult.getLastLocation();
-                points.set(0,new LatLng(location.getLatitude(),location.getLongitude()));
+                points.set(0, new LatLng(location.getLatitude(), location.getLongitude()));
                 fetchroutes(location);
             }
 
@@ -150,7 +149,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.addPolyline(rectLine);
                     markerOptions.position(points.get(2));
                     markerOptions.draggable(true);
-                    markerOptions.title("Euclidean Distance " + computeDistanceBetween(new LatLng(lctn.getLatitude(),lctn.getLongitude()), points.get(2)) + "m");
+                    markerOptions.title("Euclidean Distance " + computeDistanceBetween(new LatLng(lctn.getLatitude(), lctn.getLongitude()), points.get(2)) + "m");
                     mMap.addMarker(markerOptions);
                 }
 
@@ -163,7 +162,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
                 .add(
-                        new LatLng(lctn.getLatitude(),lctn.getLongitude()),
+                        new LatLng(lctn.getLatitude(), lctn.getLongitude()),
                         points.get(2)));
         polyline1.setColor(Color.RED);
     }
@@ -176,6 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mRequestingLocationUpdates = false;
         }
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (mMap != null) {
