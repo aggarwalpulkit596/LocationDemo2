@@ -1,6 +1,7 @@
 package com.example.pulkit.locationdemo2.REST;
 
 import com.example.pulkit.locationdemo2.MODEL.DirectionResults;
+import com.google.android.gms.maps.model.LatLng;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

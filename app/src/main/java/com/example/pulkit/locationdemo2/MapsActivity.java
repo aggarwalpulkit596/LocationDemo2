@@ -51,7 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         points.add(new LatLng(28.5244,77.1855));
-        points.get(0);
+        points.add(new LatLng(28.6127,77.2773));
+        points.add(new LatLng(28.6129,77.2295));
+        points.add(new LatLng(28.6881,77.2069));
 
     }
 
@@ -71,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void fetchroutes() {
         ApiInterface apiService = ApiClients.getClient().create(ApiInterface.class);
-        Call<DirectionResults> call = apiService.getRoutes("28.711337, 77.150708","28.5244,77.1855");
+        Call<DirectionResults> call = apiService.getRoutes("28.711337, 77.150708","28.6129,77.2295");
         call.enqueue(new Callback<DirectionResults>() {
             @Override
             public void onResponse(Call<DirectionResults> call, Response<DirectionResults> response) {
@@ -105,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                     // Adding route on the map
                     mMap.addPolyline(rectLine);
-                    markerOptions.position(points.get(0));
+                    markerOptions.position(points.get(2));
                     markerOptions.draggable(true);
                     mMap.addMarker(markerOptions);
                 }
