@@ -29,6 +29,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.0.2'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.maps.android:android-maps-utils:0.5+'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'

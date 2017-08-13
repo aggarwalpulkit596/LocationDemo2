@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.google.maps.android.SphericalUtil.computeDistanceBetween;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -39,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationCallback mLocationCallback;
     boolean mRequestingLocationUpdates;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    List<LatLng> points= new ArrayList<>();
+    List<LatLng> points = new ArrayList<>();
     MarkerOptions markerOptions = new MarkerOptions();
 
     @Override
@@ -50,10 +53,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        points.add(new LatLng(28.5244,77.1855));
-        points.add(new LatLng(28.6127,77.2773));
-        points.add(new LatLng(28.6129,77.2295));
-        points.add(new LatLng(28.6881,77.2069));
+        points.add(new LatLng(28.5244, 77.1855));
+        points.add(new LatLng(28.6127, 77.2773));
+        points.add(new LatLng(28.6129, 77.2295));
+        points.add(new LatLng(28.6881, 77.2069));
+        points.add(new LatLng(28.711337, 77.150708));
 
     }
 
@@ -62,43 +66,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-        }else{
+        } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             return;
         }
         fetchroutes();
+        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+                .add(
+                        points.get(2),
+                        points.get(4)));
+        polyline1.setColor(Color.RED);
+
     }
 
     private void fetchroutes() {
         ApiInterface apiService = ApiClients.getClient().create(ApiInterface.class);
-        Call<DirectionResults> call = apiService.getRoutes("28.711337, 77.150708","28.6129,77.2295");
+        Call<DirectionResults> call = apiService.getRoutes("28.711337, 77.150708", "28.6129,77.2295");
         call.enqueue(new Callback<DirectionResults>() {
             @Override
             public void onResponse(Call<DirectionResults> call, Response<DirectionResults> response) {
                 ArrayList<LatLng> routelist = new ArrayList<LatLng>();
-                if(response.body().getRoutes().size()>0){
+                if (response.body().getRoutes().size() > 0) {
                     ArrayList<LatLng> decodelist;
                     Route routeA = response.body().getRoutes().get(0);
-                    if(routeA.getLegs().size()>0){
-                        List<Steps> steps= routeA.getLegs().get(0).getSteps();
+                    if (routeA.getLegs().size() > 0) {
+                        List<Steps> steps = routeA.getLegs().get(0).getSteps();
                         Steps step;
                         Location location;
                         String polyline;
-                        for(int i=0 ; i<steps.size();i++){
+                        for (int i = 0; i < steps.size(); i++) {
                             step = steps.get(i);
-                            location =step.getStart_location();
+                            location = step.getStart_location();
                             routelist.add(new LatLng(location.getLat(), location.getLng()));
                             polyline = step.getPolyline().getPoints();
                             decodelist = RouteDecode.decodePoly(polyline);
                             routelist.addAll(decodelist);
-                            location =step.getEnd_location();
-                            routelist.add(new LatLng(location.getLat() ,location.getLng()));
+                            location = step.getEnd_location();
+                            routelist.add(new LatLng(location.getLat(), location.getLng()));
                         }
                     }
                 }
-                if(routelist.size()>0){
+                if (routelist.size() > 0) {
                     PolylineOptions rectLine = new PolylineOptions().width(10).color(
                             Color.BLUE);
 
@@ -109,6 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.addPolyline(rectLine);
                     markerOptions.position(points.get(2));
                     markerOptions.draggable(true);
+                    markerOptions.title("Euclidean Distance " + computeDistanceBetween(points.get(4), points.get(2))+"m");
                     mMap.addMarker(markerOptions);
                 }
 
