@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|end"
+        android:paddingBottom="25dp"
         fab:menu_labels_ellipsize="end"
         fab:menu_labels_singleLine="true">
         <com.github.clans.fab.FloatingActionButton
