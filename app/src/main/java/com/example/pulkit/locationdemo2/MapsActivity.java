@@ -113,7 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void fetchroutes(final android.location.Location lctn) {
         ApiInterface apiService = ApiClients.getClient().create(ApiInterface.class);
-        Call<DirectionResults> call = apiService.getRoutes(lctn.getLatitude() + "," + lctn.getLongitude(), "28.6129,77.2295");
+        Call<DirectionResults> call = apiService.getRoutes(lctn.getLatitude() + "," + lctn.getLongitude(), "28.6881, 77.2069");
         call.enqueue(new Callback<DirectionResults>() {
             @Override
             public void onResponse(Call<DirectionResults> call, Response<DirectionResults> response) {

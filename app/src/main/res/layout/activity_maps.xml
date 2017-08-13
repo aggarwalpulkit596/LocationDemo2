@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|end"
-        android:paddingBottom="25dp"
+        android:paddingBottom="40dp"
+        android:paddingRight="10dp"
         fab:menu_labels_ellipsize="end"
         fab:menu_labels_singleLine="true">
         <com.github.clans.fab.FloatingActionButton
@@ -22,21 +23,11 @@
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_label="Add to Watchlist"
-            fab:fab_size="mini" />
-
-        />
-        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="Add to Favorites"
+            fab:fab_label="Fetch Location"
             fab:fab_size="mini" />
-
-        />
     </com.github.clans.fab.FloatingActionMenu>
     </fragment>
 
