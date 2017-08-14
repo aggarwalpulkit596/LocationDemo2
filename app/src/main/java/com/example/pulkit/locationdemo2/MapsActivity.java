@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.pulkit.locationdemo2.MODEL.DirectionResults;
+import com.example.pulkit.locationdemo2.MODEL.Distance;
+import com.example.pulkit.locationdemo2.MODEL.Duration;
 import com.example.pulkit.locationdemo2.MODEL.Location;
 import com.example.pulkit.locationdemo2.MODEL.Route;
 import com.example.pulkit.locationdemo2.MODEL.Steps;
@@ -48,8 +50,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationRequest mLocationRequest;
     boolean mRequestingLocationUpdates;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final String KEY_CAMERA_POSITION = "camera_position";
-    private static final String KEY_LOCATION = "location";
     android.location.Location location;
     List<LatLng> points = new ArrayList<>();
     MarkerOptions markerOptions = new MarkerOptions();
@@ -61,15 +61,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<FloatingActionMenu> menus = new ArrayList<>();
     BottomSheetLayout bottomSheet;
     Polyline polylineFinal,polyline1;
+    String time,distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        if (savedInstanceState != null) {
-            location = savedInstanceState.getParcelable(KEY_LOCATION);
-            CameraPosition mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
-        }
+//        if (savedInstanceState != null) {
+//            location = savedInstanceState.getParcelable(KEY_LOCATION);
+//            CameraPosition mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+//        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -159,6 +160,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (routeA.getLegs().size() > 0) {
                         List<Steps> steps = routeA.getLegs().get(0).getSteps();
                         Steps step;
+                        Distance dist = routeA.getLegs().get(0).getDistance();
+                        Duration durt = routeA.getLegs().get(0).getDuration();
+                        time = durt.getText();
+                        distance = dist.getText();
                         Location location;
                         String polyline;
                         for (int i = 0; i < steps.size(); i++) {
@@ -186,6 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markerOptions.position(latLng);
                     markerOptions.draggable(true);
                     markerOptions.title("Euclidean Distance " + computeDistanceBetween(new LatLng(lctn.getLatitude(), lctn.getLongitude()), latLng) + "m");
+                    markerOptions.snippet("Duration "+time+" Distance "+distance);
                     mMap.addMarker(markerOptions);
                 }
 
@@ -211,15 +217,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mRequestingLocationUpdates = false;
         }
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if (mMap != null) {
-            outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
-            outState.putParcelable(KEY_LOCATION, location);
-            super.onSaveInstanceState(outState);
-        }
-    }
+//
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        if (mMap != null) {
+//            outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
+//            outState.putParcelable(KEY_LOCATION, location);
+//            super.onSaveInstanceState(outState);
+//        }
+//    }
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override

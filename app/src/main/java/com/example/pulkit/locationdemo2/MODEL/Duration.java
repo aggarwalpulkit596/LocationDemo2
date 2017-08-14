@@ -4,7 +4,7 @@ package com.example.pulkit.locationdemo2.MODEL;
  * Created by Pulkit on 8/13/2017.
  */
 
-class Duration {
+public class Duration {
     private String text;
     private String value;
 
