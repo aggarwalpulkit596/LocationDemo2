@@ -32,6 +32,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -170,10 +171,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 location = locationResult.getLastLocation();
-                if (location != previousLocation)
+//
+                if (location != previousLocation) {
                     fetchroutes(location, latLng);
-                else
                     previousLocation = location;
+                }
 
             }
 
@@ -220,7 +222,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         rectLine.add(routelist.get(i));
                     }
                     // Adding route on the map
-//                    mMap.clear();
+                    mMap.clear();
                     polylineFinal = mMap.addPolyline(rectLine);
                     markerOptions.position(latLng);
                     markerOptions.draggable(true);
@@ -268,6 +270,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 case R.id.fab1:
                     removepolyline();
                     getDeviceLocation(points.get(0));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.get(0), 16));
                     mFusedLocationProviderClient
                             .requestLocationUpdates(mLocationRequest,
                                     mLocationCallback, null);
@@ -276,6 +279,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 case R.id.fab2:
                     removepolyline();
                     getDeviceLocation(points.get(1));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.get(1), 16));
                     mFusedLocationProviderClient
                             .requestLocationUpdates(mLocationRequest,
                                     mLocationCallback, null);
@@ -285,6 +289,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 case R.id.fab3:
                     removepolyline();
                     getDeviceLocation(points.get(2));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.get(2), 16));
                     mFusedLocationProviderClient
                             .requestLocationUpdates(mLocationRequest,
                                     mLocationCallback, null);
@@ -293,6 +298,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 case R.id.fab4:
                     removepolyline();
                     getDeviceLocation(points.get(3));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.get(3), 16));
                     mFusedLocationProviderClient
                             .requestLocationUpdates(mLocationRequest,
                                     mLocationCallback, null);
